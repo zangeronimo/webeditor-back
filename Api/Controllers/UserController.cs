@@ -1,5 +1,8 @@
+using System.Threading.Tasks;
+using DB.Context;
 using Domain.Models.Webeditor;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers
 {
@@ -7,10 +10,16 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class UserController: ControllerBase
     {
-        [HttpGet]
-        public Users Get()
+        private readonly WebeditorContext _context;
+        public UserController(WebeditorContext context)
         {
-            return new Users();
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return Ok(await _context.Users.ToListAsync());
         }
     }
 }
