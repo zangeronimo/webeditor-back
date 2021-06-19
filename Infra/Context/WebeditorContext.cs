@@ -1,7 +1,7 @@
 using Domain.Models.Webeditor;
 using Microsoft.EntityFrameworkCore;
 
-namespace DB.Context
+namespace Infra.Context
 {
     public class WebeditorContext: DbContext
     {
@@ -10,6 +10,6 @@ namespace DB.Context
             
         }
 
-        public DbSet<Users> Users {get;set;}
+        public DbSet<User> Users {get;set;}
     }
 }

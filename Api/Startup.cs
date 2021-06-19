@@ -1,4 +1,8 @@
-using DB.Context;
+using Domain.Interfaces;
+using Domain.Models.Webeditor;
+using Domain.Services.Webeditor;
+using Infra.Context;
+using Infra.Repositories.Webeditor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +27,10 @@ namespace Api
         {
             services
              .AddDbContext<WebeditorContext>(options => options.UseNpgsql(Configuration.GetConnectionString("WebeditorDB")));
+
+            services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
+
+            services.AddScoped(typeof(ShowUserService));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
