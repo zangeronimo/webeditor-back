@@ -26,17 +26,35 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
-             .AddDbContext<WebeditorContext>(options => options.UseNpgsql(Configuration.GetConnectionString("WebeditorDB")));
+                .AddDbContext<WebeditorContext>(options =>
+                    options
+                        .UseNpgsql(Configuration
+                            .GetConnectionString("WebeditorDB")));
 
-            services.AddScoped(typeof(IRepository<User>), typeof(UserRepository));
+            services
+                .AddScoped(typeof (IRepository<User>), typeof (UserRepository));
+            services
+                .AddScoped(typeof (IRepository<Company>),
+                typeof (CompanyRepository));
+            services
+                .AddScoped(typeof (IRepository<Role>), typeof (RoleRepository));
+            services
+                .AddScoped(typeof (IRepository<Module>),
+                typeof (ModuleRepository));
 
-            services.AddScoped(typeof(ShowUserService));
+            services.AddScoped(typeof (ShowUserService));
+            services.AddScoped(typeof (ShowCompanyService));
+            services.AddScoped(typeof (ShowRoleService));
+            services.AddScoped(typeof (ShowModuleService));
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
-            });
+            services
+                .AddSwaggerGen(c =>
+                {
+                    c
+                        .SwaggerDoc("v1",
+                        new OpenApiInfo { Title = "Api", Version = "v1" });
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +64,11 @@ namespace Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
+                app
+                    .UseSwaggerUI(c =>
+                        c
+                            .SwaggerEndpoint("/swagger/v1/swagger.json",
+                            "Api v1"));
             }
 
             app.UseHttpsRedirection();
@@ -55,10 +77,11 @@ namespace Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
         }
     }
 }
