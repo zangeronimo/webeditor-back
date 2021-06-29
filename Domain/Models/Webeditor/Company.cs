@@ -26,5 +26,7 @@ namespace Domain.Models.Webeditor
 
         [Column("name")]
         public string Name { get; private set; }
+
+        public ICollection<Module> Modules { get; set; }
     }
 }

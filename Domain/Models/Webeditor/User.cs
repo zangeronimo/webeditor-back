@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Webeditor
 {
-    [Table("webeditor_users")]    
+    [Table("webeditor_users")]
     public class User : BaseEntity
     {
         public User(string name, string email, string password)
@@ -16,10 +16,11 @@ namespace Domain.Models.Webeditor
         {
             get
             {
-                return
-                    Name.Length > 3 && Name.Length <= 150 &&
-                    Email.Length > 3 && Email.Length <= 150 &&
-                    !string.IsNullOrEmpty(Password);
+                return Name.Length > 3 &&
+                Name.Length <= 150 &&
+                Email.Length > 3 &&
+                Email.Length <= 150 &&
+                !string.IsNullOrEmpty(Password);
             }
         }
 
@@ -40,10 +41,10 @@ namespace Domain.Models.Webeditor
 
         [Column("name")]
         public string Name { get; private set; }
-     
+
         [Column("email")]
         public string Email { get; private set; }
-     
+
         [Column("password")]
         public string Password { get; private set; }
     }

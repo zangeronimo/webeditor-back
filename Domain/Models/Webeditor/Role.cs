@@ -37,5 +37,10 @@ namespace Domain.Models.Webeditor
 
         [Column("label")]
         public string Label { get; private set; }
+
+        [Column("id_webeditor_modules")]
+        public int ModuleId { get; set; }
+
+        public Module Module { get; set; }
     }
 }
