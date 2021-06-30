@@ -47,5 +47,10 @@ namespace Domain.Models.Webeditor
 
         [Column("password")]
         public string Password { get; private set; }
+
+        [Column("id_webeditor_companies")]
+        public int CompanyId { get; set; }
+
+        public Company Company { get; set; }
     }
 }
