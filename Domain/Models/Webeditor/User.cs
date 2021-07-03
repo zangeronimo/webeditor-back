@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Webeditor
@@ -51,6 +52,8 @@ namespace Domain.Models.Webeditor
         [Column("id_webeditor_companies")]
         public int CompanyId { get; set; }
 
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
+
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

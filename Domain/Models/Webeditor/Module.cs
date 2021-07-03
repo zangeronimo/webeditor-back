@@ -27,6 +27,6 @@ namespace Domain.Models.Webeditor
         [Column("name")]
         public string Name { get; private set; }
 
-        public ICollection<Company> Companies { get; set; }
+        public virtual ICollection<Company> Companies { get; set; }
     }
 }

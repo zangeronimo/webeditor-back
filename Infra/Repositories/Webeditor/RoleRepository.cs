@@ -20,7 +20,8 @@ namespace Infra.Repositories.Webeditor
                     .Roles
                     .Where(e => e.DeletedAt == null)
                     .Where(e => e.Id == id)
-                    .Include(r => r.Module);
+                    .Include(m => m.Module)
+                    .Include(u => u.Users);
 
             if (query.Any()) return query.First();
 
@@ -33,7 +34,8 @@ namespace Infra.Repositories.Webeditor
                 _context
                     .Roles
                     .Where(e => e.DeletedAt == null)
-                    .Include(r => r.Module);
+                    .Include(m => m.Module)
+                    .Include(u => u.Users);
 
             return query.Any() ? query.ToList() : new List<Role>();
         }

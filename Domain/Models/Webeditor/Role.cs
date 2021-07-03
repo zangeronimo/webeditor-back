@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Webeditor
@@ -41,6 +42,8 @@ namespace Domain.Models.Webeditor
         [Column("id_webeditor_modules")]
         public int ModuleId { get; set; }
 
-        public Module Module { get; set; }
+        public virtual Module Module { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
     }
 }

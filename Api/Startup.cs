@@ -47,7 +47,11 @@ namespace Api
             services.AddScoped(typeof (ShowRoleService));
             services.AddScoped(typeof (ShowModuleService));
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services
                 .AddSwaggerGen(c =>
                 {
