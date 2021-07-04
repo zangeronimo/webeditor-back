@@ -21,7 +21,8 @@ namespace Domain.Models.Webeditor
                 Name.Length <= 150 &&
                 Email.Length > 3 &&
                 Email.Length <= 150 &&
-                !string.IsNullOrEmpty(Password);
+                !string.IsNullOrEmpty(Password) &&
+                CompanyId > 0;
             }
         }
 

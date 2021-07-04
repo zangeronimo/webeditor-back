@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models;
 using Infra.Context;
@@ -19,8 +20,7 @@ namespace Infra.Repositories
         {
             var query = _context.Set<T>();
 
-            if (query.Any())
-                return query.ToList();
+            if (query.Any()) return query.ToList();
 
             return new List<T>();
         }
@@ -29,8 +29,7 @@ namespace Infra.Repositories
         {
             var query = _context.Set<T>().Where(e => e.Id == id);
 
-            if (query.Any())
-                return query.FirstOrDefault();
+            if (query.Any()) return query.FirstOrDefault();
 
             return null;
         }
@@ -49,9 +48,15 @@ namespace Infra.Repositories
         {
             _context.Set<T>().Remove(entity);
         }
+
         public virtual void Save()
         {
             _context.SaveChanges();
+        }
+
+        public async virtual Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

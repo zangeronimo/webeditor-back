@@ -43,6 +43,9 @@ namespace Api
                 typeof (ModuleRepository));
 
             services.AddScoped(typeof (ShowUserService));
+            services.AddScoped(typeof (CreateUserService));
+            services.AddScoped(typeof (UpdateUserService));
+
             services.AddScoped(typeof (ShowCompanyService));
             services.AddScoped(typeof (ShowRoleService));
             services.AddScoped(typeof (ShowModuleService));
