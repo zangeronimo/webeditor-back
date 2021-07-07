@@ -44,14 +44,32 @@ namespace Api.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{Id}")]
         public async Task<ActionResult<User>>
-        Put([FromServices] UpdateUserService _update, [FromBody] User data)
+        Put([FromServices] UpdateUserService _update, int Id,  [FromBody] User data)
         {
             try
             {
+                if (Id != data.Id) {
+                    return BadRequest("Usuário inválido.");
+                }
                 var updatedUser = await _update.Execute(data);
                 return updatedUser;
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<User>>
+        Delete([FromServices] DeleteUserService _delete, int Id)
+        {
+            try
+            {
+                var deletedUser = await _delete.Execute(Id);
+                return deletedUser;
             }
             catch (Exception e)
             {

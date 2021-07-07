@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,6 +25,15 @@ namespace Domain.Models.Webeditor
                 !string.IsNullOrEmpty(Password) &&
                 CompanyId > 0;
             }
+        }
+
+        public void Update(User user)
+        {
+            Id = user.Id;
+            Name = user.Name;
+            Email = user.Email;
+            Password = user.Password;
+            UpdatedAt = DateTime.Now;
         }
 
         public void setName(string name)

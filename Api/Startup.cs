@@ -45,6 +45,7 @@ namespace Api
             services.AddScoped(typeof (ShowUserService));
             services.AddScoped(typeof (CreateUserService));
             services.AddScoped(typeof (UpdateUserService));
+            services.AddScoped(typeof (DeleteUserService));
 
             services.AddScoped(typeof (ShowCompanyService));
             services.AddScoped(typeof (ShowRoleService));

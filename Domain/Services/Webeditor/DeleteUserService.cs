@@ -1,45 +1,33 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Domain.Interfaces;
 using Domain.Models.Webeditor;
 
 namespace Domain.Services.Webeditor
 {
-    public class UpdateUserService
+    public class DeleteUserService
     {
         private readonly IRepository<User> _userRepository;
 
-        public UpdateUserService(IRepository<User> userRepository)
+        public DeleteUserService(IRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<User> Execute(User data)
+        public async Task<User> Execute(int Id)
         {
             try
             {
-                if (data.IsValid)
+                if (Id > 0)
                 {
-                    // Verifica se e-mail já cadastrado
-                    var userWithTheSameEmail = _userRepository.GetAll().Where(r => r.Email == data.Email).Where(r => r.Id != data.Id);
-                    if (userWithTheSameEmail.Any()) 
-                    {
-                        throw new Exception("E-mail já cadastrado no sistema.");
-                    }
-
                     // Verifica se usuário existe
-                    var currentUser = _userRepository.GetById(data.Id);
+                    var currentUser = _userRepository.GetById(Id);
 
                     if (currentUser == null) {
                         throw new Exception("Usuário inválido.");
                     }
 
-                    if (currentUser.CompanyId != data.CompanyId) {
-                        throw new Exception("Usuário inválido.");
-                    }
-
-                    currentUser.Update(data);
+                    currentUser.DeletedAt = DateTime.Now;
 
                     _userRepository.Update(currentUser);
                     await _userRepository.SaveAsync();
