@@ -9,10 +9,12 @@ namespace Domain.Services.Webeditor
     public class UpdateUserService
     {
         private readonly IRepository<User> _userRepository;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public UpdateUserService(IRepository<User> userRepository)
+        public UpdateUserService(IRepository<User> userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> Execute(User data)
@@ -37,6 +39,12 @@ namespace Domain.Services.Webeditor
 
                     if (currentUser.CompanyId != data.CompanyId) {
                         throw new Exception("Usuário inválido.");
+                    }
+
+
+                    if (!string.IsNullOrEmpty(data.Password))
+                    {
+                        data.setPassword(_passwordHasher.Hash(data.Password));
                     }
 
                     currentUser.Update(data);

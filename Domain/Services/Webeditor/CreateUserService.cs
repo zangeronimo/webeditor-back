@@ -10,10 +10,12 @@ namespace Domain.Services.Webeditor
     public class CreateUserService
     {
         private readonly IRepository<User> _userRepository;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public CreateUserService(IRepository<User> userRepository)
+        public CreateUserService(IRepository<User> userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> Execute(User data)
@@ -32,6 +34,8 @@ namespace Domain.Services.Webeditor
                     var now = DateTime.Now;
                     data.CreatedAt = now;
                     data.UpdatedAt = now;
+
+                    data.setPassword(_passwordHasher.Hash(data.Password));
 
                     _userRepository.Add (data);
                     await _userRepository.SaveAsync();

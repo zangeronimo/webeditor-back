@@ -2,6 +2,7 @@ using Domain.Interfaces;
 using Domain.Models.Webeditor;
 using Domain.Services.Webeditor;
 using Infra.Context;
+using Infra.Providers;
 using Infra.Repositories.Webeditor;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,6 +51,8 @@ namespace Api
             services.AddScoped(typeof (ShowCompanyService));
             services.AddScoped(typeof (ShowRoleService));
             services.AddScoped(typeof (ShowModuleService));
+            
+            services.AddScoped(typeof(IPasswordHasher), typeof(PasswordHasher));
 
             services
                 .AddControllers()
