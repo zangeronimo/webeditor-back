@@ -34,7 +34,7 @@ namespace Api
                 .AddDbContext<WebeditorContext>(options =>
                     options
                         .UseNpgsql(dbConnection));
-                            
+
             string secret = Configuration.GetConnectionString("Secret");
             var key = Encoding.ASCII.GetBytes(secret);
             services.AddAuthentication(x =>
