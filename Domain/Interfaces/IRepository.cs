@@ -18,5 +18,5 @@ namespace Domain.Interfaces
         void Save();
 
         Task SaveAsync();
-    }
+  }
 }

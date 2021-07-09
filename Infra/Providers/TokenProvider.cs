@@ -2,15 +2,16 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Domain.Models;
+using Domain.Interfaces;
 using Domain.Models.Webeditor;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infra.Providers
 {
-    public class TokenProvider
+  public class TokenProvider: ITokenProvider
     {
-        public static string GenerateToken(User user, String secret)
+
+    public string GenerateToken(User user, string secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secret);

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Interfaces;
@@ -7,7 +6,7 @@ using Domain.Models.Webeditor;
 
 namespace Domain.Services.Webeditor
 {
-    public class CreateUserService
+  public class CreateUserService
     {
         private readonly IRepository<User> _userRepository;
         private readonly IPasswordHasher _passwordHasher;

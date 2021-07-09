@@ -1,36 +1,59 @@
+using System;
+using System.Text;
 using Domain.Interfaces;
 using Domain.Models.Webeditor;
 using Domain.Services.Webeditor;
 using Infra.Context;
 using Infra.Providers;
 using Infra.Repositories.Webeditor;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Api
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string dbConnection = Configuration.GetConnectionString("WebeditorDB");
             services
                 .AddDbContext<WebeditorContext>(options =>
                     options
-                        .UseNpgsql(Configuration
-                            .GetConnectionString("WebeditorDB")));
+                        .UseNpgsql(dbConnection));
+                            
+            string secret = Configuration.GetConnectionString("Secret");
+            var key = Encoding.ASCII.GetBytes(secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services
                 .AddScoped(typeof (IRepository<User>), typeof (UserRepository));
@@ -43,6 +66,8 @@ namespace Api
                 .AddScoped(typeof (IRepository<Module>),
                 typeof (ModuleRepository));
 
+            services.AddScoped(typeof (AuthService));
+
             services.AddScoped(typeof (ShowUserService));
             services.AddScoped(typeof (CreateUserService));
             services.AddScoped(typeof (UpdateUserService));
@@ -53,6 +78,7 @@ namespace Api
             services.AddScoped(typeof (ShowModuleService));
             
             services.AddScoped(typeof(IPasswordHasher), typeof(PasswordHasher));
+            services.AddScoped(typeof(ITokenProvider), typeof(TokenProvider));
 
             services
                 .AddControllers()
