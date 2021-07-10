@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain.Models.Webeditor;
 using Domain.Services.Webeditor;
+using Domain.View;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -12,7 +14,7 @@ namespace Api.Controllers
     public class UserController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<User>>
+        public ActionResult<IEnumerable<UserView>>
         Get(
             [FromServices] ShowUserService _show,
             [FromQuery(Name = "filter")] string filter
@@ -21,7 +23,7 @@ namespace Api.Controllers
             try
             {
                 var users = _show.Execute(filter);
-                return Ok(users);
+                return Ok(users.Select(u => new UserView(u)));
             }
             catch (Exception e)
             {
@@ -30,13 +32,13 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>>
+        public async Task<ActionResult<UserView>>
         Post([FromServices] CreateUserService _create, [FromBody] User data)
         {
             try
             {
                 var createdUser = await _create.Execute(data);
-                return createdUser;
+                return new UserView(createdUser);
             }
             catch (Exception e)
             {
@@ -45,7 +47,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<ActionResult<User>>
+        public async Task<ActionResult<UserView>>
         Put([FromServices] UpdateUserService _update, int Id,  [FromBody] User data)
         {
             try
@@ -54,7 +56,7 @@ namespace Api.Controllers
                     return BadRequest("Usuário inválido.");
                 }
                 var updatedUser = await _update.Execute(data);
-                return updatedUser;
+                return new UserView(updatedUser);
             }
             catch (Exception e)
             {
@@ -63,13 +65,13 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<ActionResult<User>>
+        public async Task<ActionResult<UserView>>
         Delete([FromServices] DeleteUserService _delete, int Id)
         {
             try
             {
                 var deletedUser = await _delete.Execute(Id);
-                return deletedUser;
+                return new UserView(deletedUser);
             }
             catch (Exception e)
             {

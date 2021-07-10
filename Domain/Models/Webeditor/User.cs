@@ -7,11 +7,12 @@ namespace Domain.Models.Webeditor
     [Table("webeditor_users")]
     public class User : BaseEntity
     {
-        public User(string name, string email, string password)
+        public User(string name, string email, string password, int companyId)
         {
             Name = name;
             Email = email;
             Password = password;
+            CompanyId = companyId;
         }
 
         public bool IsValid
@@ -34,6 +35,7 @@ namespace Domain.Models.Webeditor
             Email = user.Email;
             Password = user.Password;
             UpdatedAt = DateTime.Now;
+            Roles = user.Roles;
         }
 
         public void setName(string name)
